@@ -31,17 +31,14 @@ def cleanNYC(file_name):
 def cleanUber(file_name):
     df=pd.read_csv(file_name);
 
-cleanNYC('yellow_tripdata_2014-04.csv').to_pickle('nyc4.pkl')
-cleanNYC('yellow_tripdata_2014-05.csv').to_pickle('nyc5.pkl')
-cleanNYC('yellow_tripdata_2014-06.csv').to_pickle('nyc6.pkl')
-cleanNYC('yellow_tripdata_2014-07.csv').to_pickle('nyc7.pkl')
-cleanNYC('yellow_tripdata_2014-08.csv').to_pickle('nyc8.pkl')
-cleanNYC('yellow_tripdata_2014-09.csv').to_pickle('nyc9.pkl')
-cleanNYC('yellow_tripdata_2015-01.csv').to_pickle('nyc10.pkl')
-cleanNYC('yellow_tripdata_2015-02.csv').to_pickle('nyc11.pkl')
-cleanNYC('yellow_tripdata_2015-03.csv').to_pickle('nyc12.pkl')
-cleanNYC('yellow_tripdata_2015-04.csv').to_pickle('nyc13.pkl')
-cleanNYC('yellow_tripdata_2015-05.csv').to_pickle('nyc14.pkl')
-cleanNYC('yellow_tripdata_2015-06.csv').to_pickle('nyc15.pkl')
+cleanNYC('yellow_tripdata_2014-10.csv').to_pickle('nyc1.pkl')
+cleanNYC('yellow_tripdata_2014-11.csv').to_pickle('nyc2.pkl')
+cleanNYC('yellow_tripdata_2014-12.csv').to_pickle('nyc3.pkl')
+cleanNYC('yellow_tripdata_2015-01.csv').to_pickle('nyc4.pkl')
+
+cleanUber('uber-10-2014.csv').to_pickle('uber1.pkl')
+cleanUber('uber-11-2014.csv').to_pickle('uber2.pkl')
+cleanUber('uber-12-2014.csv').to_pickle('uber3.pkl')
+cleanUber('uber-1-2015.csv').to_pickle('uber4.pkl')
 
 
