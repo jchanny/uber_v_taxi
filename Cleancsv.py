@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
+import random
 
 def filterNYC(filename,weekend):
     df=pd.read_csv(filename)
-    index=pd.Series(['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','00'])
+    df.drop(df.columns[[0,3,5,6,7,8,9,10,11]],axis=1)
+    index=pd.Series(['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24'])
     #weekday and weekend are the actual price per mile
     columns=['weekday_price','weekday_distance','weekday','weekend_price','weekend_dist','weekend']
     filteredDf=pd.DataFrame(index=index,columns=columns)
@@ -11,16 +13,21 @@ def filterNYC(filename,weekend):
     currentDate=01
     weekendIndex=0
     isWeekend=False
+
+    #randomly select 8000 data points
+    r=random.sample(xrange(1,8000000),8000)
     #filling in values for the filtered dataframe
-    for x in xrange(len(df)):
-        tipamt=df.iloc[x]['tip_amount']
-        totaltemp=df.iloc[x]['total_amount']
-        df.loc[x,'total_amount']=totaltemp-tipamt
-        pickup_time=df.iloc[x]['pickup_datetime']
-        pickup_time=pickup_time[11:13]
-        pickup_date=df.iloc[x]['pickup_datetime']
-        pickup_date=pickup_date[8:10]
+    for x in xrange(len(r)):
         
+        totaltemp=df.iloc[r[x]][' fare_amount']
+        df.loc[r[x],' total_amount']=totaltemp
+        pickup_time=df.iloc[r[x]][' pickup_datetime']
+        pickup_time=pickup_time[11:13]
+        pickup_date=df.iloc[r[x]][' pickup_datetime']
+        pickup_date=pickup_date[8:10]
+        if pickup_time=='00':
+            pickup_time='24'
+            
         if pickup_date!=currentDate:
             currentDate=pickup_date
 
@@ -28,21 +35,20 @@ def filterNYC(filename,weekend):
             if currentDate==weekend[y]:
                 isWeekend=True
             
-        distance=df.iloc[x]['trip_distance']
+        distance=df.iloc[r[x]][' trip_distance']
         
         if isWeekend==False:
-            filteredDf.loc[pickup_time]['weekday_price']+=totaltemp-tipamt
+            filteredDf.loc[pickup_time]['weekday_price']+=totaltemp
             filteredDf.loc[pickup_time]['weekday_distance']+=distance
+            if filteredDf.loc[pickup_time]['weekday_price']!=0 and filteredDf.loc[pickup_time]['weekday_distance']!=0:
+                filteredDf.loc[pickup_time]['weekday']=filteredDf.loc[pickup_time]['weekday_price']/filteredDf.loc[pickup_time]['weekday_distance']
             
         if isWeekend==True:
-            filteredDf.loc[pickup_time]['weekend_price']+=totaltemp-tipamt
+            filteredDf.loc[pickup_time]['weekend_price']+=totaltemp
             filteredDf.loc[pickup_time]['weekend_dist']+=distance
+            if filteredDf.loc[pickup_time]['weekend_price']!=0 and filteredDf.loc[pickup_time]['weekend_price']!=0:
+                filteredDf.loc[pickup_time]['weekend']=filteredDf.loc[pickup_time]['weekend_price']/filteredDf.loc[pickup_time]['weekend_dist']
             
-        if filteredDf.loc[pickup_time]['weekday_price']!=0 and filteredDf.loc[pickup_time]['weekday_distance']!=0:
-            filteredDf.loc[pickup_time]['weekday']=filteredDf.loc[pickup_time]['weekday_price']/filteredDf.loc[pickup_time]['weekday_distance']
-        if filteredDf.loc[pickup_time]['weekend_price']!=0 and filteredDf.loc[pickup_time]['weekend_price']!=0:
-            filteredDf.loc[pickup_time]['weekend']=filteredDf.loc[pickup_time]['weekend_price']/filteredDf.loc[pickup_time]['weekend_dist']
-
         isWeekend=False
     return filteredDf
 
@@ -60,8 +66,3 @@ DecemberWeekendList=['6','7','13','14','20','21','27','28']
 nyc3=filterNYC('yellow_tripdata_2014-12.csv',DecemberWeekendList)
 nyc3.to_csv('nyc3.csv')
 del nyc3
-
-JanuaryWeekendList=['3','4','10','11','17','18','24','25','31']
-nyc4=filterNYC('yellow_tripdata-2015-01.csv',JanuaryWeekendList)
-nyc4.to_csv('nyc4.csv')
-del nyc4
