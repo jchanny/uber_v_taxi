@@ -52,17 +52,51 @@ def filterNYC(filename,weekend):
         isWeekend=False
     return filteredDf
 
-OctoberWeekendList=['04','05','11','12','18','19','25','26']
-nyc1=filterNYC('yellow_tripdata_2014-10.csv',OctoberWeekendList)
-nyc1.to_csv('nyc1.csv')
-del nyc1
+# OctoberWeekendList=['04','05','11','12','18','19','25','26']
+# nyc1=filterNYC('yellow_tripdata_2014-10.csv',OctoberWeekendList)
+# nyc1.to_csv('nyc1.csv')
+# del nyc1
 
-NovemeberWeekendList=['1','2','8','9','15','16','22','23','29','30']
-nyc2=filterNYC('yellow_tripdata_2014-11.csv',NovemeberWeekendList)
-nyc2.to_csv('nyc2.csv')
-del nyc2
+# NovemeberWeekendList=['1','2','8','9','15','16','22','23','29','30']
+# nyc2=filterNYC('yellow_tripdata_2014-11.csv',NovemeberWeekendList)
+# nyc2.to_csv('nyc2.csv')
+# del nyc2
 
-DecemberWeekendList=['6','7','13','14','20','21','27','28']
-nyc3=filterNYC('yellow_tripdata_2014-12.csv',DecemberWeekendList)
-nyc3.to_csv('nyc3.csv')
-del nyc3
+# DecemberWeekendList=['6','7','13','14','20','21','27','28']
+# nyc3=filterNYC('yellow_tripdata_2014-12.csv',DecemberWeekendList)
+# nyc3.to_csv('nyc3.csv')
+# del nyc3
+
+def filterUber(filename):
+    df=pd.read_csv(filename)
+    weekday=[]
+    weekend=[]
+    for x in xrange(len(df)):
+        #adding in base fare charge of $6, and assuming stuck in traffic for 10 mins @rate of .75/min & shortest route of 5.5mi is taken
+        adjustedPrice_weekday=(df.iloc[x]['Weekday']+6)
+        adjustedPrice_weekday=adjustedPrice_weekday+(15*.75)
+        adjustedPrice_weekday=adjustedPrice_weekday/5.5
+        weekday.append(adjustedPrice_weekday)
+        adjustedPrice_weekend=(df.iloc[x]['Weekend']+6)
+        adjustedPrice_weekend=adjustedPrice_weekend+(15*.75)
+        adjustedPrice_weekend=adjustedPrice_weekend/5.5
+        weekend.append(adjustedPrice_weekend)
+    df['weekday']=pd.Series(weekday,index=df.index)
+    df['weekend']=pd.Series(weekend,index=df.index)
+    del df['Weekday']
+    del df['Weekend']
+    return df
+        
+
+uber1=filterUber('uber-2014-10.csv')
+uber1.to_csv('uber1.csv')
+del uber1
+
+uber2=filterUber('uber-2014-11.csv')
+uber2.to_csv('uber2.csv')
+del uber2
+
+uber3=filterUber('uber-2014-12.csv')
+uber3.to_csv('uber3.csv')
+del uber3
+
