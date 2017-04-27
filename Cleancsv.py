@@ -31,6 +31,7 @@ def filterNYC(filename,weekend):
         if pickup_date!=currentDate:
             currentDate=pickup_date
 
+        #determining if current data point is a weekend
         for y in xrange(len(weekend)):
             if currentDate==weekend[y]:
                 isWeekend=True
@@ -52,20 +53,20 @@ def filterNYC(filename,weekend):
         isWeekend=False
     return filteredDf
 
-# OctoberWeekendList=['04','05','11','12','18','19','25','26']
-# nyc1=filterNYC('yellow_tripdata_2014-10.csv',OctoberWeekendList)
-# nyc1.to_csv('nyc1.csv')
-# del nyc1
+OctoberWeekendList=['04','05','11','12','18','19','25','26']
+nyc1=filterNYC('yellow_tripdata_2014-10.csv',OctoberWeekendList)
+nyc1.to_csv('nyc1.csv')
+del nyc1
 
-# NovemeberWeekendList=['1','2','8','9','15','16','22','23','29','30']
-# nyc2=filterNYC('yellow_tripdata_2014-11.csv',NovemeberWeekendList)
-# nyc2.to_csv('nyc2.csv')
-# del nyc2
+NovemeberWeekendList=['1','2','8','9','15','16','22','23','29','30']
+nyc2=filterNYC('yellow_tripdata_2014-11.csv',NovemeberWeekendList)
+nyc2.to_csv('nyc2.csv')
+del nyc2
 
-# DecemberWeekendList=['6','7','13','14','20','21','27','28']
-# nyc3=filterNYC('yellow_tripdata_2014-12.csv',DecemberWeekendList)
-# nyc3.to_csv('nyc3.csv')
-# del nyc3
+DecemberWeekendList=['6','7','13','14','20','21','27','28']
+nyc3=filterNYC('yellow_tripdata_2014-12.csv',DecemberWeekendList)
+nyc3.to_csv('nyc3.csv')
+del nyc3
 
 def filterUber(filename):
     df=pd.read_csv(filename)

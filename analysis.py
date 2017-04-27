@@ -37,7 +37,7 @@ del nyc1,nyc2,nyc3
 #plotting a graph of NYC weekday vs weekday price graph
 plt.plot(nyc[['time']],nyc[['weekday']],label='weekday price')
 plt.plot(nyc[['time']],nyc[['weekend']],label='weekend price')
-plt.title('Price per mile/time')
+plt.title('Yellow Taxi Price per mile/time')
 plt.ylabel('Price')
 plt.xlabel('Time (24 hours)')
 plt.legend()
@@ -69,13 +69,18 @@ uber['time']=pd.Series([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
 uber.to_csv('uber.csv')
 del uber1,uber2,uber3
 
-plt.plot(uber[['time']],uber[['weekday']],label='weekday price')
-plt.plot(uber[['time']],uber[['weekend']],label='weekend price')
-plt.title('Price per mile/time')
+plt.plot(uber[['time']],uber[['weekday']],label='Uber weekday price')
+plt.plot(uber[['time']],uber[['weekend']],label='Uber weekend price')
+plt.title('Uber price per mile/time')
 plt.ylabel('Price')
 plt.xlabel('Time (24 hours)')
 plt.legend()
 plt.savefig('uber_price-graph.png')
+plt.plot(nyc[['time']],nyc[['weekday']],label='Yellow taxi weekday price')
+plt.plot(nyc[['time']],nyc[['weekend']],label='Yellow taxi weekend price')
+plt.legend()
+plt.title('Combined uber/yellow taxi price/mile')
+plt.savefig('combined_price-graph.png')
 plt.gcf().clear()
 
 
@@ -107,5 +112,4 @@ plt.xlabel('Time (24 hours)')
 plt.title('Predicted price/time')
 plt.savefig('predicted-price.png')
 
-#seeing how accurate prediction is:
 
